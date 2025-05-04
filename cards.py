@@ -38,7 +38,7 @@
 def locate_cards(cards, query):
   lo, hi = 0, len(cards) - 1
   
-  while lo <= hi:
+  while lo <= hi: 
     mid = (lo + hi) // 2
     mid_number = cards[mid]
     
@@ -53,6 +53,33 @@ def locate_cards(cards, query):
   return -1 
 
 
+   
+
+# -------> for duplicate elements
+def test_location(cards, query, mid):
+  if cards[mid] == query:
+    if mid - 1 >= 0 and cards[mid-1] == query:
+      return 'left'
+    else:
+      return 'found'
+  elif cards[mid] < query:
+    return 'left'
+  else:
+    return 'right'
+
+def locate_card(cards, query):
+  lo, hi = 0, len(cards) - 1
+  while lo <= hi:
+    mid = (lo + hi) // 2
+    result = test_location(cards, query, mid)
+    if result == 'found':
+      return mid
+    elif result == 'left':
+      hi = mid - 1
+    elif result == 'right':
+      lo = mid + 1
+  return -1  
+
 tests = [
     {
         'input': {'cards': [13, 11, 10, 7, 4, 3, 1, 0], 'query': 7},
@@ -65,6 +92,10 @@ tests = [
     {
         'input': {'cards': [9, 7, 5], 'query': 4},
         'expected': -1
+    },
+     {
+        'input': {'cards': [13, 11, 11, 11, 10, 7, 4], 'query': 11},
+        'expected': 1   
     }
 ]
 
@@ -72,5 +103,4 @@ tests = [
 for i, test in enumerate(tests):
     result = locate_cards(**test['input'])
     print(f"Test {i + 1}: {'Pass' if result == test['expected'] else f'Fail (got {result})'}")
-    
  
